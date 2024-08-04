@@ -1,0 +1,66 @@
+/* styles.css */
+
+.w3-sidebar a {
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+}
+
+body, h1, h2, h3, h4, h5, h6, .w3-wide {
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+}
+
+/* Cambiar el color de fondo del cuerpo */
+body {
+    background-color: #51ABB2;
+}
+
+/* Cambiar el color de fondo de la barra lateral */
+.w3-sidebar {
+    background-color: #FFD700;
+}
+
+/* Estilos para los botones */
+.w3-button {
+    background-color: #FFD700;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+/* Custom styles for the submit button */
+.w3-button.w3-submit {
+    background-color: #4CAF50; /* Color de fondo verde */
+    color: white; /* Color del texto */
+    border: none; /* Quitar borde */
+    padding: 10px 20px; /* Espaciado */
+    text-align: center; /* Alinear texto */
+    text-decoration: none; /* Quitar subrayado */
+    display: inline-block; /* Hacer inline-block */
+    font-size: 16px; /* Tamaño de fuente */
+    margin: 4px 2px; /* Margen */
+    cursor: pointer; /* Cursor */
+    transition-duration: 0.4s; /* Duración de transición */
+    border-radius: 8px; /* Esquinas redondeadas */
+}
+
+.w3-button:hover {
+    background-color: #FFFF00; /* Cambiar el color de fondo al pasar el ratón */
+    color: #000;
+}
+
+/* Estilo para el título dentro de la barra lateral */
+.w3-sidebar h3 {
+    font-weight: bold; /* Poner el título en negrita */
+}
+
+/* Estilo para el título principal */
+.w3-container.w3-xlarge p {
+    font-weight: bold; /* Poner el título principal en negrita */
+}
