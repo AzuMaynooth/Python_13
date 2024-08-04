@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Warehouse Management System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="style.css"> <!-- Enlace al archivo CSS externo -->
+</head>
+<body class="w3-content" style="max-width:1200px">
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
+    <div class="w3-container w3-display-container w3-padding-16">
+        <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
+        <h3 class="w3-wide"><img src="../static/Logo.PNG" alt="Logo" style="width:100%"></h3>
+    </div>
+    <div class="w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
+        <a href="purchase" class="w3-bar-item w3-button">Purchase</a>
+        <a href="sale" class="w3-bar-item w3-button">Sale</a>
+        <a href="balance" class="w3-bar-item w3-button">Balance Change</a>
+        <a href="history" class="w3-bar-item w3-button">History</a>
+    </div>
+</nav>
+
+<!-- Top menu on small screens -->
+<header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
+    <div class="w3-bar-item w3-padding-24 w3-wide"><img src="../static/Logo.PNG" alt="Logo" style="width:100%"></div>
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-24 w3-right" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+</header>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:250px">
+
+    <!-- Push down content on small screens -->
+    <div class="w3-hide-large" style="margin-top:83px"></div>
+
+    <!-- Top header -->
+    <header class="w3-container w3-xlarge">
+        <p class="w3-left">Warehouse Management</p>
+    </header>
+
+    <div class="w3-container">
+        <div class="w3-row-padding" style="margin:16px 0">
+            <div class="w3-half">
+                <div class="w3-card-4 w3-padding">
+                    <h3 id="stock-level">Stock Level: </h3>
+                </div>
+            </div>
+            <div class="w3-half">
+                <div class="w3-card-4 w3-padding">
+                    <h3 id="account-balance">Account Balance: </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+    document.getElementById("myOverlay").style.display = "block";
+}
+
+function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+    document.getElementById("myOverlay").style.display = "none";
+}
+
+// Fetch and display data
+function fetchData() {
+    fetch('/api/data')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('stock-level').textContent = data.stock_level + ' units';
+            document.getElementById('account-balance').textContent = '€' + data.account_balance;
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+document.addEventListener('DOMContentLoaded', fetchData);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>History</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
+</head>
+
+<body class="w3-content" style="max-width:1200px">
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
+    <div class="w3-container w3-display-container w3-padding-16">
+        <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
+        <h3 class="w3-wide"><img src="../static/Logo.PNG" alt="Logo" style="width:100%"></h3>
+    </div>
+     <div class="w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
+        <a href="/" class="w3-bar-item w3-button">Home</a>
+        <a href="/purchase" class="w3-bar-item w3-button">Purchase</a>
+        <a href="/sale" class="w3-bar-item w3-button">Sale</a>
+        <a href="/balance" class="w3-bar-item w3-button">Balance Change</a>
+        <a href="history" class="w3-bar-item w3-button">History</a>
+    </div>
+</nav>
+
+<!-- Top menu on small screens -->
+<header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
+    <div class="w3-bar-item w3-padding-24 w3-wide">LOGO</div>
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-24 w3-right" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+</header>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:250px">
+
+    <!-- Push down content on small screens -->
+    <div class="w3-hide-large" style="margin-top:83px"></div>
+
+    <!-- Top header -->
+    <header class="w3-container w3-xlarge">
+        <p class="w3-left">History</p>
+    </header>
+
+    <div class="w3-container">
+        <!-- Filter Form -->
+        <form id="filterForm" class="w3-margin-bottom">
+            <label for="fromDate">From Date:</label>
+            <input type="date" id="fromDate" name="from">
+            <label for="toDate">To Date:</label>
+            <input type="date" id="toDate" name="to">
+            <button type="button" onclick="fetchHistory()">Filter</button>
+        </form>
+        <div id="historyList" class="w3-card-4 w3-padding-16">
+            <!-- History content will be dynamically populated here -->
+        </div>
+    </div>
+
+</div>
+
+<script>
+// Open and close sidebar
+function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+    document.getElementById("myOverlay").style.display = "block";
+}
+
+function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+    document.getElementById("myOverlay").style.display = "none";
+}
+
+// Function to fetch and display history based on date range
+function fetchHistory() {
+    var from = document.getElementById('fromDate').value;
+    var to = document.getElementById('toDate').value;
+    var url = '/history/';
+
+    // Add date parameters if present
+    if (from) {
+        url += '?from=' + encodeURIComponent(from);
+    }
+    if (to) {
+        url += (from ? '&' : '?') + 'to=' + encodeURIComponent(to);
+    }
+
+    fetch(url, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'  // Indicates AJAX request
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            displayHistory(data);
+        })
+        .catch(error => {
+            console.error('Error fetching history:', error);
+            document.getElementById('historyList').innerHTML = '<p>Error fetching history data.</p>';
+        });
+}
+
+// Function to display history in a table format
+function displayHistory(historyData) {
+    var historyList = document.getElementById('historyList');
+    historyList.innerHTML = ''; // Clear previous content
+
+    if (historyData.length === 0) {
+        historyList.innerHTML = '<p>No history records found.</p>';
+    } else {
+        // Create a table
+        var table = document.createElement('table');
+        table.className = 'w3-table w3-bordered w3-striped w3-hoverable';
+
+        // Create table header
+        var thead = document.createElement('thead');
+        var headerRow = document.createElement('tr');
+        headerRow.innerHTML = '<th>ID</th><th>Date</th><th>Description</th>';
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Create table body
+        var tbody = document.createElement('tbody');
+        historyData.forEach(function(entry) {
+            var row = document.createElement('tr');
+            row.innerHTML = '<td>' + entry.id + '</td>' +
+                            '<td>' + entry.date + '</td>' +
+                            '<td>' + entry.description + '</td>';
+            tbody.appendChild(row);
+        });
+        table.appendChild(tbody);
+
+        // Append the table to the historyList
+        historyList.appendChild(table);
+    }
+}
+
+// Fetch history on page load
+document.addEventListener('DOMContentLoaded', fetchHistory);
+</script>
+
+</body>
+</html>
